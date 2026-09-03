@@ -2,37 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Me</title>
 </head>
 <body>
 
   <header>
     <h1>Angelina Abboud</h1>
-    <p>4th year CCE student.</p>
-    
+
     <nav>
-      <a href="#about">About</a> |
-      <a href="#contact">Contact</a>
+      <a href="#about">Bio</a> |
+      <a href="#contact">Contact Me</a>
     </nav>
   </header>
 
+  <hr>
+
   <main>
     
-    <section id="about">
-      <h2>About Me</h2>
+    <section id="bio">
+      <h2>Biography</h2>
+
+      <img src="my-photo.jpg" alt="An image of Angelina Abboud" width="250">
       <p>Hello! I'm a 4th year CCE student at ESIB-USJ, this year i have chosen to go into the Software Engineering option. I enjoy solving problems, learning new technologies, and bringing creative ideas to life on the web.</p>
+      <p>I am a passionate aspiring web developer based in the city. My journey into tech began when I became curious about how websites are built behind the scenes. Over the past few months, I have been diving deep into web fundamentals, learning the core building blocks of the internet starting with semantic HTML5 and clean code structure.</p>
     </section>
 
+    <hr>
+
     <section id="contact">
-      <h2>Get in Touch</h2>
+      <h2>Contact Me</h2>
+
+      <form action="#" method="post">
+        <div>
+          <label for="user-name">Full Name:</label><br>
+          <input type="text" id="user-name" name="name" required>
+        </div>
+
+        <br>
+
+        <div>
+          <label for="user-email">Email Address:</label><br>
+          <input type="email" id="user-email" name="email" required>
+        </div>
+
+        <br>
+
+        <div>
+          <label for="user-message">Message:</label><br>
+          <textarea id="user-message" name="message" rows="5" required></textarea>
+        </div>
+
+        <br>
+
+        <button type="submit">Send Message</button>
+        </form>
       <p>Feel free to reach out to me via email!</p>
       <p>Email: <a href="mailto:angelina.abboud1@net.usj.edu.lb">angelina.abboud1@net.usj.edu.lb</a></p>
     </section>
 
   </main>
 
+  <hr>
+
   <footer>
-    <p>2026 Angelina Abboud. ALL RIGHTS RESERVED</p>
+    <p>&copy; 2026 Angelina Abboud. All rights reserved.</p>
   </footer>
 
 </body>
