@@ -1,0 +1,30 @@
+h1 {
+    background-color: red;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+}
+
+.card > h1{
+    border : 5px solid black;
+    padding: 10px;
+    margin: 10px;
+}
+
+
+h1 ~ p {
+    background-color: green;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+}
+
+.item {
+    background-color: red;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+}

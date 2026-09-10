@@ -1,0 +1,109 @@
+
+body {
+    background-color: #fdf2f8;
+    color: black;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 2rem 1rem;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+header {
+    background-color: pink;
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+}
+
+header > h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+}
+
+nav > a {
+    color: hotpink;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+}
+
+section {
+    background-color: #ffffff;
+    border: 1px solid hotpink;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+section > h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.25;
+    border-bottom: 2px solid hotpink;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+h2 + p {
+    margin-top: 0.5rem;
+}
+
+section > p {
+    margin-bottom: 1rem;
+}
+
+section > img {
+    display : block;
+    max-width: 100%;
+    border-radius: 6px;
+    margin-bottom: 1.25rem;
+}
+
+form > div {
+    margin-bottom: 1.25rem;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #0f172a;
+}
+
+textarea, input[type="text"], input[type="email"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid pink;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+button {
+    background-color: lightpink;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+footer > p {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #64748b;
+    padding: 1rem 0;
+}
