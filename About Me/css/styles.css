@@ -1,4 +1,8 @@
-
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 body {
     background-color: #fdf2f8;
     color: black;
@@ -29,11 +33,19 @@ header > h1 {
     margin-bottom: 0.75rem;
 }
 
+nav {
+    color: hotpink;
+}
+
 nav > a {
     color: hotpink;
     text-decoration: none;
     font-weight: 600;
     padding: 0.25rem 0.5rem;
+}
+
+nav > a:hover {
+    text-decoration: underline;
 }
 
 section {
@@ -69,6 +81,14 @@ section > img {
     margin-bottom: 1.25rem;
 }
 
+.skills-list {
+    margin-left: 1.5rem;
+}
+
+.skills-list > li {
+    margin-bottom: 0.5rem;
+}
+
 form > div {
     margin-bottom: 1.25rem;
 }
@@ -87,6 +107,13 @@ textarea, input[type="text"], input[type="email"] {
     border-radius: 4px;
     font-size: 1rem;
     font-family: inherit;
+    background-color: #fff1f2;
+}
+
+textarea:focus, 
+input[type="text"]:focus, 
+input[type="email"]:focus {
+    outline: 2px solid hotpink;
 }
 
 button {
@@ -99,6 +126,10 @@ button {
     padding: 0.75rem 1.5rem;
     margin-bottom: 1rem;
     cursor: pointer;
+}
+
+button:hover {
+    background-color: hotpink;
 }
 
 footer > p {
