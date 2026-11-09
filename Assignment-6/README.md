@@ -13,7 +13,7 @@ A RESTful Express API for managing personal notes, backed by an SQLite database 
 | File | Purpose |
 |---|---|
 | `server.js` | The whole API: database setup, validation, routes, error handling |
-| `package.json` | Dependencies and the `npm start` script |
+| `package.json` | Dependencies and the `npm start` / `npm run dev` scripts |
 | `.env` / `.env.example` | Configuration (port, database file, allowed front-end origin) |
 | `.gitignore` | Keeps `.env`, `node_modules/` and `*.db` out of Git |
 | `postman/notes-api.postman_collection.json` | Postman / Thunder Client collection with every route |
@@ -35,6 +35,10 @@ A RESTful Express API for managing personal notes, backed by an SQLite database 
 3. Start the server:
    ```bash
    npm start
+   ```
+   or, for development (auto-restarts when you save a file):
+   ```bash
+   npm run dev
    ```
 
 The server starts on `http://localhost:3000`. Note that the root URL `/` has no route (it returns a 404 JSON error); all routes live under `/api/notes`.
@@ -70,7 +74,7 @@ The server starts on `http://localhost:3000`. Note that the root URL `/` has no 
 - Query parameters (all optional):
   - `search`: filters notes whose title contains the text
   - `sort`: `newest` (default) or `oldest`
-  - `limit`: maximum number of notes returned (default: 20)
+  - `limit`: maximum number of notes returned (default: no limit, all notes are returned)
 - Response (200 OK):
 ```json
 [
@@ -124,7 +128,9 @@ All errors are JSON in the form `{"error": "message"}`.
 ## Testing the API
 
 ### Option A: Postman / Thunder Client (recommended)
-Import `postman/notes-api.postman_collection.json` and click **Send** on each request. It has 12 requests covering every route, including the 400 and 404 cases.
+Import `postman/notes-api.postman_collection.json`. It has 12 requests covering every route, including the 400 and 404 cases, and each request has an automated test script that checks the status code (and the response body where relevant). To run everything at once, use the collection **Runner** (Postman) or **Run All** (Thunder Client). The Create request saves the new note's id in a collection variable, so the collection works against any database state.
+
+Screenshots of a full collection run (all tests passing) are in the `screenshots/` folder.
 
 ### Option B: PowerShell (Windows) with `Invoke-RestMethod`
 

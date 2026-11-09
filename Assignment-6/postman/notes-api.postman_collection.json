@@ -7,11 +7,27 @@
     {
       "key": "baseUrl",
       "value": "http://localhost:3000"
+    },
+    {
+      "key": "noteId",
+      "value": ""
     }
   ],
   "item": [
     {
       "name": "Create note (201)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Note has id, title and createdAt', function () { const n = pm.response.json(); pm.expect(n).to.have.property('id'); pm.expect(n.title).to.eql('Exam topics'); pm.expect(n).to.have.property('createdAt'); pm.collectionVariables.set('noteId', n.id); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
@@ -38,6 +54,18 @@
     },
     {
       "name": "Create note - no title (400)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 400', function () { pm.response.to.have.status(400); });",
+              "pm.test('Returns a JSON error message', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
@@ -64,6 +92,18 @@
     },
     {
       "name": "Read all (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Body is an array', function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [],
@@ -81,6 +121,18 @@
     },
     {
       "name": "Read all - search/limit (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Body is an array', function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [],
@@ -112,42 +164,78 @@
     },
     {
       "name": "Read one (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Returns the note', function () { pm.expect(pm.response.json().id).to.eql(Number(pm.collectionVariables.get('noteId'))); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/api/notes/1",
+          "raw": "{{baseUrl}}/api/notes/{{noteId}}",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "notes",
-            "1"
+            "{{noteId}}"
           ]
         }
       }
     },
     {
       "name": "Read one - missing (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 404', function () { pm.response.to.have.status(404); });",
+              "pm.test('Returns a JSON error message', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/api/notes/9999",
+          "raw": "{{baseUrl}}/api/notes/999999",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "notes",
-            "9999"
+            "999999"
           ]
         }
       }
     },
     {
       "name": "Replace PUT (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Note was replaced', function () { pm.expect(pm.response.json().title).to.eql('New title'); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "PUT",
         "header": [
@@ -157,14 +245,14 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/notes/1",
+          "raw": "{{baseUrl}}/api/notes/{{noteId}}",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "notes",
-            "1"
+            "{{noteId}}"
           ]
         },
         "body": {
@@ -175,6 +263,18 @@
     },
     {
       "name": "Replace PUT - no title (400)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 400', function () { pm.response.to.have.status(400); });",
+              "pm.test('Returns a JSON error message', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "PUT",
         "header": [
@@ -184,14 +284,14 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/notes/1",
+          "raw": "{{baseUrl}}/api/notes/{{noteId}}",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "notes",
-            "1"
+            "{{noteId}}"
           ]
         },
         "body": {
@@ -202,6 +302,18 @@
     },
     {
       "name": "Update PATCH (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Title changed, body kept', function () { const n = pm.response.json(); pm.expect(n.title).to.eql('Only the title changes'); pm.expect(n.body).to.eql('New body'); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "PATCH",
         "header": [
@@ -211,14 +323,14 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/notes/1",
+          "raw": "{{baseUrl}}/api/notes/{{noteId}}",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "notes",
-            "1"
+            "{{noteId}}"
           ]
         },
         "body": {
@@ -229,6 +341,18 @@
     },
     {
       "name": "Update PATCH - missing (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 404', function () { pm.response.to.have.status(404); });",
+              "pm.test('Returns a JSON error message', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "PATCH",
         "header": [
@@ -238,14 +362,14 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/notes/9999",
+          "raw": "{{baseUrl}}/api/notes/999999",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "notes",
-            "9999"
+            "999999"
           ]
         },
         "body": {
@@ -256,36 +380,59 @@
     },
     {
       "name": "Delete (204)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 204', function () { pm.response.to.have.status(204); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/api/notes/1",
+          "raw": "{{baseUrl}}/api/notes/{{noteId}}",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "notes",
-            "1"
+            "{{noteId}}"
           ]
         }
       }
     },
     {
       "name": "Delete again (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 404', function () { pm.response.to.have.status(404); });",
+              "pm.test('Returns a JSON error message', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/api/notes/1",
+          "raw": "{{baseUrl}}/api/notes/{{noteId}}",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "notes",
-            "1"
+            "{{noteId}}"
           ]
         }
       }

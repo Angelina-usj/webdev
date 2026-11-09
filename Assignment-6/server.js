@@ -3,7 +3,6 @@ import express from 'express';
 import cors from 'cors';
 import Database from 'better-sqlite3';
 
-// ---------- Database (SQLite file, so data persists) ----------
 const db = new Database(process.env.DB_FILE || 'notes.db');
 db.exec(`
   CREATE TABLE IF NOT EXISTS notes (
@@ -18,12 +17,10 @@ const app = express();
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
 app.use(express.json());
 
-// ---------- Helpers ----------
 function findNote(id) {
   return db.prepare('SELECT * FROM notes WHERE id = ?').get(Number(id));
 }
 
-// Validation middleware (POST and PUT): check, then next()
 function requireTitle(req, res, next) {
   const title = req.body?.title;
   if (typeof title !== 'string' || !title.trim()) {
@@ -35,29 +32,27 @@ function requireTitle(req, res, next) {
   next();
 }
 
-// ---------- Routes ----------
-
-// READ ALL  (supports ?search= &sort= &limit=)
 app.get('/api/notes', (req, res) => {
-  const { search = '', sort = 'newest', limit = 20 } = req.query;
+  const { search = '', sort = 'newest', limit } = req.query;
 
   let result = db.prepare('SELECT * FROM notes').all().filter(n =>
     n.title.toLowerCase().includes(String(search).toLowerCase()));
 
   if (sort === 'newest') {
     result.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  } else if (sort === 'oldest') {
+    result.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   }
-  res.json(result.slice(0, Number(limit) || 20));
+  const max = Number(limit);
+  res.json(max > 0 ? result.slice(0, max) : result);
 });
 
-// READ ONE
 app.get('/api/notes/:id', (req, res) => {
   const note = findNote(req.params.id);
   if (!note) return res.status(404).json({ error: 'Note not found' });
   res.json(note);
 });
 
-// CREATE
 app.post('/api/notes', requireTitle, (req, res) => {
   const createdAt = new Date().toISOString();
   const info = db
@@ -66,7 +61,6 @@ app.post('/api/notes', requireTitle, (req, res) => {
   res.status(201).json(findNote(info.lastInsertRowid));
 });
 
-// REPLACE (PUT) - whole note, missing body becomes ''
 app.put('/api/notes/:id', requireTitle, (req, res) => {
   const note = findNote(req.params.id);
   if (!note) return res.status(404).json({ error: 'Note not found' });
@@ -76,7 +70,6 @@ app.put('/api/notes/:id', requireTitle, (req, res) => {
   res.json(findNote(note.id));
 });
 
-// UPDATE (PATCH) - only the fields you send
 app.patch('/api/notes/:id', (req, res) => {
   const note = findNote(req.params.id);
   if (!note) return res.status(404).json({ error: 'Note not found' });
@@ -97,7 +90,6 @@ app.patch('/api/notes/:id', (req, res) => {
   res.json(note);
 });
 
-// DELETE - 204, no body
 app.delete('/api/notes/:id', (req, res) => {
   const note = findNote(req.params.id);
   if (!note) return res.status(404).json({ error: 'Note not found' });
@@ -106,10 +98,8 @@ app.delete('/api/notes/:id', (req, res) => {
   res.sendStatus(204);
 });
 
-// ---------- Unknown route -> 404 ----------
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 
-// ---------- Error handler: server never crashes ----------
 app.use((err, req, res, next) => {
   if (err.type === 'entity.parse.failed') {
     return res.status(400).json({ error: 'Malformed JSON in request body' });
